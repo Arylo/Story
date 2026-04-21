@@ -7,6 +7,21 @@
         "mcp-obsidian"
       ],
       "envFile": "${workspaceFolder}/.env"
+    },
+    "web-search": {
+      "command": "npx",
+      "args": [
+        "open-websearch@latest"
+      ],
+      "env": {
+        "MODE": "both",
+        "DEFAULT_SEARCH_ENGINE": "bing",
+        "ALLOWED_SEARCH_ENGINES": "bing,baidu"
+      }
+    },
+    "local-rag": {
+      "command": "npx",
+      "args": ["-y", "mcp-local-rag"]
     }
   }
 }

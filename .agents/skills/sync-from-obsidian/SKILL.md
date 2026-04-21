@@ -1,6 +1,6 @@
 ---
 name: sync-from-obsidian
-description: 'Sync files FROM Obsidian vault back to the story workspace (时间线/故事/设定). Use for: pulling Obsidian edits back to repo, restoring vault content, selective file/folder pull by path. Supports targeting by folder-name, sub-folder-path, or file-path arguments. At least one argument must be provided.'
+description: 'Sync files FROM Obsidian vault back to the story workspace (时间线/故事/设定/参考资料). Use for: pulling Obsidian edits back to repo, restoring vault content, selective file/folder pull by path. Supports targeting by folder-name, sub-folder-path, or file-path arguments. At least one argument must be provided.'
 argument-hint: '[folder-name=<story-folder>] [sub-folder-path=<relative-path>] [file-path=<vault-relative-file>]'
 ---
 
@@ -31,7 +31,7 @@ At least **one** of the following three arguments must be provided:
 
 1. If `file-path` is given → **single-file mode**: pull only that one file
 2. Else if `sub-folder-path` is given → **sub-folder mode**: pull all files within that sub-folder
-3. Else (only `folder-name`) → **full-story mode**: pull all files in `时间线/`, `故事/`, `设定/`
+3. Else (only `folder-name`) → **full-story mode**: pull all files in `时间线/`, `故事/`, `设定/`, `参考资料/`
 
 **Determining the target workspace story folder**:
 
@@ -54,6 +54,9 @@ folder-name=all-are-heroes sub-folder-path=设定/角色设计
 # All three (most explicit)
 folder-name=all-are-heroes sub-folder-path=设定 file-path=设定/世界观/背景交代.md
 
+# Pull only reference materials for a story
+folder-name=lone-eagle-valor sub-folder-path=参考资料
+
 # Pull everything for a story
 folder-name=all-are-heroes
 ```
@@ -66,17 +69,18 @@ folder-name=all-are-heroes
 
 ## Scope: Story Folder Coverage
 
-⚠️ **This skill only writes into the three main story folder subdirectories:**
+⚠️ **This skill only writes into the four main story folder subdirectories:**
 
 | Folder | Purpose | Included |
 |--------|---------|----------|
 | `时间线/` | Timeline files (year-based events) | ✅ YES |
 | `故事/` | Story content (正文 chapters + 大纲 outlines) | ✅ YES |
-| `设定/` | World-building & characters (世界观 + 角色设计) | ✅ YES |
+| `设定/` | World-building & character files (世界观 + 角色 / 人物设定) | ✅ YES |
+| `参考资料/` | Reference materials (史料、考据、灵感摘录等) | ✅ YES |
 
-- ✅ **Writes to**: workspace files inside the three main folders
+- ✅ **Writes to**: workspace files inside the four main folders
 - ❌ **Does NOT overwrite**: Top-level `.env`, `CLAUDE.md`, `AGENT.md`
-- ❌ **Does NOT pull**: Files outside the three main folders
+- ❌ **Does NOT pull**: Files outside the four main folders
 - ❌ **Does NOT pull**: Version control or config artifacts
 
 ## Quick Checklist
@@ -106,8 +110,8 @@ folder-name=all-are-heroes
 ### Step 5: Enumerate Files to Pull from Vault
 - [ ] **single-file mode**: target = `<file-path>`
 - [ ] **sub-folder mode**: use `mcp_obsidian_list_files_in_dir` on `<sub-folder-path>`, collect all `.md` files recursively
-- [ ] **full-story mode**: use `mcp_obsidian_list_files_in_dir` on each of `时间线/`, `故事/`, `设定/` in turn
-- [ ] Validate each path is within the three main folders (reject others)
+- [ ] **full-story mode**: use `mcp_obsidian_list_files_in_dir` on each of `时间线/`, `故事/`, `设定/`, `参考资料/` in turn
+- [ ] Validate each path is within the four main folders (reject others)
 - [ ] List as "pull" or "skip" based on scope
 - [ ] Example output:
   ```
@@ -174,7 +178,7 @@ Execution:
 1. Check root .env for OBSIDIAN_API_KEY ✓
 2. Verify Obsidian at 127.0.0.1:27123 ✓
 3. Read lone-eagle-valor/.env → OBSIDIAN_VAULT=lone-eagle-valor
-4. List files in: 时间线/, 故事/, 设定/
+4. List files in: 时间线/, 故事/, 设定/, 参考资料/
 5. Pull all files, write to workspace
 6. Summary report
 ```

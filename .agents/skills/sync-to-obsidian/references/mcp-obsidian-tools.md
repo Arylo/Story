@@ -7,7 +7,7 @@
 | 1 | Verify root `.env` has `OBSIDIAN_API_KEY` | Check format & non-empty |
 | 2 | Test Obsidian API at `127.0.0.1:27123` | Expect `"status": "OK"` |
 | 3 | List staged files via `git status` | Identify files to sync |
-| 4 | Record story folder structure | Note 时间线/, 故事/, 设定/ |
+| 4 | Record story folder structure | Note 时间线/, 故事/, 设定/, 参考资料/ |
 | 5 | Enumerate files with sync/skip markers | Count: to-sync vs already-synced |
 | 6 | Invoke subagent for each file | Call mcp-obsidian append_content |
 
@@ -87,6 +87,7 @@ Subdirectories:
   - 时间线/ (timeline)
   - 故事/ (story content)
   - 设定/ (world-building & characters)
+  - 参考资料/ (reference materials)
 ```
 
 **Step 5 Output:**

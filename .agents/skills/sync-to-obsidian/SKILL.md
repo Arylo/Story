@@ -1,7 +1,7 @@
 ---
 name: sync-to-obsidian
-description: 'Sync story folder files (时间线/故事/设定) to Obsidian vault while preserving directory structure. Use for: story content migration, timeline/worldbuilding backup, character design sync, story text updates via mcp-obsidian. Note: Only syncs the three main story folders, not top-level configs.'
-argument-hint: 'Specify story folder name and which three-folder sections to sync'
+description: 'Sync story folder files (时间线/故事/设定/参考资料) to Obsidian vault while preserving directory structure. Use for: story content migration, timeline/worldbuilding backup, character design sync, story text updates via mcp-obsidian. Note: Only syncs the four main story folders, not top-level configs.'
+argument-hint: 'Specify story folder name and which top-level story sections to sync'
 ---
 
 # Sync to Obsidian
@@ -21,15 +21,16 @@ argument-hint: 'Specify story folder name and which three-folder sections to syn
 
 ## Scope: Story Folder Coverage
 
-⚠️ **This skill syncs ONLY the three main story folder subdirectories:**
+⚠️ **This skill syncs ONLY the four main story folder subdirectories:**
 
 | Folder | Purpose | Included |
 |--------|---------|----------|
 | `时间线/` | Timeline files (year-based events) | ✅ YES |
 | `故事/` | Story content (正文 chapters + 大纲 outlines) | ✅ YES |
-| `设定/` | World-building & characters (世界观 + 角色设计) | ✅ YES |
+| `设定/` | World-building & character files (世界观 + 角色 / 人物设定) | ✅ YES |
+| `参考资料/` | Reference materials (史料、考据、灵感摘录等) | ✅ YES |
 
-- ✅ **Syncs within these three folders**: All markdown files and subdirectories
+- ✅ **Syncs within these four folders**: All markdown files and subdirectories
 - ✅ **Marks as "skip"**: Already-synced subsections (e.g., 世界观 if previously synced)
 - ❌ **Does NOT sync**: Top-level `.env`, `CLAUDE.md`, `AGENT.md` (except on first run)
 - ❌ **Does NOT sync**: Other story folders outside the story structure
@@ -53,9 +54,12 @@ all-are-heroes/
 │   └── 大纲/
 │       ├── 第一部.md
 │       └── ...
-└── 设定/                   ← ✅ Scope: All files synced
-    ├── 世界观/             (34 files)
-    └── 角色设计/           (9 files)
+├── 设定/                   ← ✅ Scope: All files synced
+│   ├── 世界观/             (34 files)
+│   └── 角色设计/           (9 files)
+└── 参考资料/               ← ✅ Scope: All files synced
+    ├── 史料摘录.md
+    └── 灵感备忘.md
 ```
 
 ## Quick Checklist
@@ -76,27 +80,29 @@ all-are-heroes/
 - [ ] Identify which files are new, modified, or ready for sync
 - [ ] Note: Only sync files that are staged or explicitly marked for sync
 
-### Step 4: Identify Three Main Folders (Story Structure Only)
+### Step 4: Identify Four Main Folders (Story Structure Only)
 - [ ] Confirm syncing is within a story folder (e.g., `all-are-heroes/`)
-- [ ] **Only sync these three main folders:**
+- [ ] **Only sync these four main folders:**
   * `时间线/` – Timeline files (events by year)
   * `故事/` – Story content (chapters & outlines)
-  * `设定/` – World-building & characters (worldview & character designs)
-- [ ] Identify staged files **within** these three folders only
+  * `设定/` – World-building & characters (worldview & character files)
+  * `参考资料/` – Research, reference, and source material
+- [ ] Identify staged files **within** these four folders only
 - [ ] Note which subdirectories to skip (e.g., already synced `世界观/`)
 - [ ] ❌ **Exclude**: Top-level `.env`, `CLAUDE.md`, `AGENT.md` (unless init)
 
-### Step 5: List Files to Sync (Within the Three Folders)
-- [ ] Enumerate only staged files from Step 3 that are **in the three main folders**
+### Step 5: List Files to Sync (Within the Four Folders)
+- [ ] Enumerate only staged files from Step 3 that are **in the four main folders**
 - [ ] Group by target vault path
 - [ ] Mark as "sync" or "skip" based on folder status
 - [ ] Example output:
   ```
   Scope: Story folder (all-are-heroes)
   
-  To Sync (2 files - within scope):
+  To Sync (3 files - within scope):
   ✓ 故事/正文/01-01.md → 故事/正文/01-01.md
   ✓ 故事/大纲/第一部.md → 故事/大纲/第一部.md
+  ✓ 参考资料/史料摘录.md → 参考资料/史料摘录.md
   
   Already Synced (skip - within scope):
   ✓ 设定/世界观/ (34 files)
@@ -127,30 +133,31 @@ Story Folder: all-are-heroes/
 ├── 故事/
 │   ├── 正文/
 │   └── 大纲/
-└── 设定/
-    ├── 世界观/ ← Already synced, skip
-    └── 角色设计/ ← Already synced, skip
+├── 设定/
+│   ├── 世界观/ ← Already synced, skip
+│   └── 角色设计/ ← Already synced, skip
+└── 参考资料/
 
 Execution:
 1. Check root .env for OBSIDIAN_API_KEY ✓
 2. Verify Obsidian at 127.0.0.1:27123 ✓
 3. Find staged files in all-are-heroes/
-4. Record subdirectories: 时间线/, 故事/, 设定/
+4. Record subdirectories: 时间线/, 故事/, 设定/, 参考资料/
 5. List files to sync (skip already-synced)
 6. Invoke subagent for each file
 ```
 
 ### Phased Sync (Skip Completed Sections)
 ```
-Sync: 故事/, 设定/角色设计/
+Sync: 故事/, 参考资料/
 Skip: 设定/世界观/  ← Already synced
 ```
 
 ### Selective Sync (Single Folder)
 ```
 Vault: my-vault
-Source: all-are-heroes/设定/角色设计/
-Target: 设定/角色设计/  ← Preserves structure
+Source: all-are-heroes/参考资料/
+Target: 参考资料/  ← Preserves structure
 ```
 
 ### Update Existing Vault
