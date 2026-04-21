@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "obsidian": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-obsidian"
+      ],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
